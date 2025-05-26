@@ -1,4 +1,3 @@
-
 /*
               _ _______
     /\        | |__   __|
@@ -10,31 +9,28 @@
 CARTOGRAFÍAS SONORAS
 Honorino García Mayo 2025
 
-Panel Gestión GRAIN DENSITY
-"clip.h"
-Comprueba si es mayor que el máximo o menor que el mínimo
+Panel Control GRAIN DENSITY
+"config.h"
+Configuración Comunicaciones
+SSID: PERANCHU
+PASS: TexucaLana72
+Ip 192.168.1.203
 */
 
-int clipValue(int in, int minVal, int maxVal)
-{
-    int out;
+#include <Arduino.h>
+#include <WiFi.h>
+#include <WiFiUdp.h>
 
-    minVal++;
+const char *ssid = "PERANCHU";
+const char *password = "TexucaLana72";
 
-    if (in > maxVal)
-    {
-        out = maxVal;
-    }
-    else if (in < minVal)
-    {
-        out = minVal - 1;
-    }
-    else
-    {
-        out = in;
-    }
-    return out;
-}
+const IPAddress ip(192, 168, 1, 203);
+const IPAddress gateway(192, 168, 1, 1);
+const IPAddress subnet(255, 255, 255, 0);
+
+const IPAddress outIP(192, 168, 1, 100); // IP Ordenador que recibe los datos
+const unsigned int outPort = 9999;
+const unsigned int localPort = 8888;
 
 /*
   _____           _                         __ _              _____

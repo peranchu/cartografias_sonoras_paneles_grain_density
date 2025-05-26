@@ -21,19 +21,19 @@ Distancia máxima: 360
 */
 
 #include <Arduino.h>
+#include <OSCMessage.h>
 #include <ResponsiveAnalogRead.h>
 #include "clip.h"
 
 // Param Potes
-#define PotGrain 33
+#define PotDensity 35
 
 int valPotes = 0;
-int valPotes_scale = 0; // escalado para pintar en Pantalla
+int valPotes_scale_grain_du = 0; // escalado para pintar en Pantalla
 
 int readingPot = 0;
 int PotCState = 0;
 int PotPState = 0;
-const char *envioPot[] = {"/PotGrain"};
 
 int potVar = 0;
 const int TIMEOUT_POT = 300;
@@ -42,7 +42,7 @@ bool potMoving = true;
 unsigned long PTimePot = 0;
 unsigned long timerPot = 0;
 
-int pot_min = 26;
+int pot_min = 29;
 int pot_max = 360;
 ///////////////////////////////////////////////
 
@@ -54,7 +54,7 @@ ResponsiveAnalogRead resposivePot;
 // Lectura Potenciómetro
 int Lectura_potenciometro()
 {
-    readingPot = analogRead(PotGrain);
+    readingPot = analogRead(PotDensity);
     resposivePot.update(readingPot);
     PotCState = resposivePot.getValue();
 
@@ -78,8 +78,16 @@ int Lectura_potenciometro()
     }
     if (potMoving == true)
     {
-        valPotes_scale = map(PotCState, 26, 360, 0, 100);
+        valPotes_scale_grain_du = map(PotCState, 29, 360, 0, 100);
         valPotes = PotCState;
+
+        // Envio Mensaje
+        OSCMessage grainDu("/PotGrainDen");
+        grainDu.add(valPotes_scale_grain_du);
+        Udp.beginPacket(outIP, outPort); // 192.168.1.100 : 9999
+        grainDu.send(Udp);
+        Udp.endPacket();
+        grainDu.empty();
 
         // Serial.print(" Potenciometro: ");
         // Serial.println(PotCState);
@@ -89,6 +97,19 @@ int Lectura_potenciometro()
         PotPState = PotCState;
     }
 
-    return valPotes_scale;
+    return valPotes_scale_grain_du;
 }
 ////// FIN LECTURA POTENCIOMETROS /////////
+
+/*
+  _____           _                         __ _              _____
+ / ____|         | |                       / _(_)            / ____|
+| |     __ _ _ __| |_ ___   __ _ _ __ __ _| |_ _  __ _ ___  | (___   ___  _ __   ___  _ __ __ _ ___
+| |    / _` | '__| __/ _ \ / _` | '__/ _` |  _| |/ _` / __|  \___ \ / _ \| '_ \ / _ \| '__/ _` / __|
+| |___| (_| | |  | || (_) | (_| | | | (_| | | | | (_| \__ \  ____) | (_) | | | | (_) | | | (_| \__ \
+ \_____\__,_|_|   \__\___/ \__, |_|  \__,_|_| |_|\__,_|___/ |_____/ \___/|_| |_|\___/|_|  \__,_|___/
+                            __/ |
+                           |___/
+
+ Honorino García Mayo 2025
+*/

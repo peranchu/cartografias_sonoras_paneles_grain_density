@@ -18,6 +18,7 @@ pantalla i2c 0x25 16x2
 
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
+#include "esp32Utils.h"
 
 LiquidCrystal_I2C lcd(0x25, 16, 2); // Dirección i2c y tamaño 16x2
 
@@ -172,3 +173,38 @@ void Pantalla_inicio()
     delay(demoDelay);
 }
 ////// FIN DIBUJO PANTALLA INICIO //////
+
+// Pantalla CONEXIÓN
+void PantallaConexion(String state)
+{
+    if (state == "desconectado")
+    {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("conexion:");
+        lcd.setCursor(0, 1);
+        lcd.print(state);
+    }
+    else if (state == "conectado")
+    {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("conexion OK");
+        lcd.setCursor(0, 1);
+        lcd.print(WiFi.localIP());
+    }
+}
+/////// FIN PANTALLA CONEXIÓN ///////
+
+/*
+  _____           _                         __ _              _____
+ / ____|         | |                       / _(_)            / ____|
+| |     __ _ _ __| |_ ___   __ _ _ __ __ _| |_ _  __ _ ___  | (___   ___  _ __   ___  _ __ __ _ ___
+| |    / _` | '__| __/ _ \ / _` | '__/ _` |  _| |/ _` / __|  \___ \ / _ \| '_ \ / _ \| '__/ _` / __|
+| |___| (_| | |  | || (_) | (_| | | | (_| | | | | (_| \__ \  ____) | (_) | | | | (_) | | | (_| \__ \
+ \_____\__,_|_|   \__\___/ \__, |_|  \__,_|_| |_|\__,_|___/ |_____/ \___/|_| |_|\___/|_|  \__,_|___/
+                            __/ |
+                           |___/
+
+ Honorino García Mayo 2025
+*/

@@ -1,11 +1,24 @@
+
 /*
+              _ _______
+    /\        | |__   __|
+   /  \   _ __| |_ | | ___  ___
+  / /\ \ | '__| __|| |/ _ \/ __|
+ / ____ \| |  | |_ | |  __/ (__
+/_/    \_\_|   \__||_|\___|\___|
+
+CARTOGRAFÍAS SONORAS
+Honorino García Mayo 2025
+
+Panel Gestión GRAIN DENSITY
+"potenciometro.h"
 Lectura Potenciometro GAMETRAK
 Marrón: 3.3v
 verde: GND
 Naranja: eje Z
-Distancia mínima: 0
+Distancia mínima: 26
 Distancia máxima: 360
-*/ 
+*/
 
 #include <Arduino.h>
 #include <ResponsiveAnalogRead.h>
@@ -38,7 +51,7 @@ float snapMultipler = 0.01;
 ResponsiveAnalogRead resposivePot;
 ///////////////////////////
 
-// Lectura Potenciómetros
+// Lectura Potenciómetro
 int Lectura_potenciometro()
 {
     readingPot = analogRead(PotGrain);
@@ -68,10 +81,10 @@ int Lectura_potenciometro()
         valPotes_scale = map(PotCState, 26, 360, 0, 100);
         valPotes = PotCState;
 
-        //Serial.print(" Potenciometro: ");
-        //Serial.println(PotCState);
+        // Serial.print(" Potenciometro: ");
+        // Serial.println(PotCState);
 
-        //Serial.println();
+        // Serial.println();
 
         PotPState = PotCState;
     }

@@ -1,8 +1,27 @@
+
+/*
+              _ _______
+    /\        | |__   __|
+   /  \   _ __| |_ | | ___  ___
+  / /\ \ | '__| __|| |/ _ \/ __|
+ / ____ \| |  | |_ | |  __/ (__
+/_/    \_\_|   \__||_|\___|\___|
+
+CARTOGRAFÍAS SONORAS
+Honorino García Mayo 2025
+
+Panel Gestión GRAIN DURATION
+"pantalla.h"
+Gestión Pantalla inicio - Pantalla principal GRAIN DURATION
+pantalla i2c 0x25 16x2
+*/
+
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 
 LiquidCrystal_I2C lcd(0x25, 16, 2); // Dirección i2c y tamaño 16x2
 
+// Set Pantalla inicio
 char text[] = "Cartografias Sonoras"; // Texto Pantalla inicio
 const unsigned int scrollDelay = 200;
 const unsigned int demoDelay = 2000;
@@ -32,7 +51,7 @@ int move_offset = 0; // used to shift bits for the custom characters
 const int gauge_size_chars = 16;         // width of the gauge in number of characters
 char gauge_string[gauge_size_chars + 1]; // string that will include all the gauge character to be printed
 
-// Dibuja la pantalla
+// Dibuja la pantalla PRINCIPAL
 void dibujoPantalla(int valPot)
 {
     float units_per_pixel = (gauge_size_chars * 5.0) / 100.0; //  every character is 5px wide, we want to count from 0-100
@@ -114,10 +133,10 @@ void dibujoPantalla(int valPot)
     }
 
     // gauge drawing
-    lcd.setCursor(0, 0);                     // move cursor to top left
+    lcd.setCursor(0, 0);                        // move cursor to top left
     sprintf(buffer, "GRAIN_DE:%3d%% ", valPot); // set a string as CPU: XX%, with the number always taking at least 3 character
-    lcd.print(buffer);                       // print the string on the display
-    lcd.write(byte(0));                      // print warning character
+    lcd.print(buffer);                          // print the string on the display
+    lcd.write(byte(0));                         // print warning character
 
     lcd.setCursor(0, 1);     // move the cursor to the next line
     lcd.print(gauge_string); // display the gauge
@@ -139,24 +158,17 @@ void Pantalla_inicio()
         lcd.scrollDisplayLeft();
         delay(scrollDelay);
     }
-
+    // Scroll entire text in a row to the right outside the screen
     for (byte posticionCounter = 0; posticionCounter < textLen + 16; posticionCounter++)
     {
         lcd.scrollDisplayRight();
         delay(scrollDelay);
     }
 
-    /* // Scroll text to the right back to original position
-    for (byte positionCounter = 0; positionCounter < 16; positionCounter++)
-    {
-        lcd.scrollDisplayLeft();
-        delay(scrollDelay);
-    } */
     lcd.clear();
 
     lcd.setCursor(0, 1);
     lcd.print("ArtTec (c)2025");
     delay(demoDelay);
-
 }
 ////// FIN DIBUJO PANTALLA INICIO //////
